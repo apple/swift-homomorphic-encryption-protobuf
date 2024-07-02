@@ -1,0 +1,70 @@
+// Copyright 2024 Apple Inc. and the Swift Homomorphic Encryption project authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+package apple.swift_homomorphic_encryption.pir.v1;
+
+import "apple/swift_homomorphic_encryption/pir/v1/pir_algorithm.proto";
+import "apple/swift_homomorphic_encryption/v1/he.proto";
+
+// How aggressively to compress the Galois keys needed for expansion.
+enum KeyCompressionStrategy {
+  // Generate keys for all permutations.
+  KEY_COMPRESSION_STRATEGY_UNSPECIFIED = 0;
+  // Only generate keys for permutations 2^j + 1 with j <= ceil(log_degree + 1 / 2)
+  // reconstruct permutations 2^j + 1 for higher j by composing permutations.
+  KEY_COMPRESSION_STRATEGY_MAXIMUM_COMPRESSION = 1;
+  // Add one more key to the maximum compression keys to roughly square root the number
+  // of keyswitches required during expansion.
+  KEY_COMPRESSION_STRATEGY_HYBRID_COMPRESSION = 2;
+}
+
+// Parameters for PIR.
+// These need to be agreed upon by both the server and client.
+message PirParameters {
+  // Encryption parameters.
+  apple.swift_homomorphic_encryption.v1.EncryptionParameters encryption_parameters = 1;
+  // Number of entries in the database.
+  uint64 num_entries = 2;
+  // Size in bytes of entries in the database.
+  uint64 entry_size = 3;
+  // Dimensions that make up the hypercube.
+  repeated uint64 dimensions = 4;
+  // Parameters specific to KeywordPIR.
+  KeywordPirParameters keyword_pir_params = 5;
+  // Server-side PIR algorithm.
+  PirAlgorithm algorithm = 6;
+  // Maximum number of queries allowed in a single request.
+  uint64 batch_size = 7;
+  // Evaluation key configuration.
+  apple.swift_homomorphic_encryption.v1.EvaluationKeyConfig evaluation_key_config = 8;
+  // Key compression strategy.
+  KeyCompressionStrategy key_compression_strategy = 9;
+  reserved 10, 11;
+}
+
+// Parameters for keyword PIR.
+message KeywordPirParameters {
+  // The number of hash functions used.
+  uint64 num_hash_functions = 1;
+  reserved 2;
+}
+
+// Encrypted PIR index.
+message EncryptedIndices {
+  // PIR query.
+  repeated apple.swift_homomorphic_encryption.v1.SerializedCiphertext ciphertexts = 1;
+  // Number of PIR calls.
+  uint64 num_pir_calls = 2;
+}

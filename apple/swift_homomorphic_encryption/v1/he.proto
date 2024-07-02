@@ -1,0 +1,140 @@
+// Copyright 2024 Apple Inc. and the Swift Homomorphic Encryption project authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+package apple.swift_homomorphic_encryption.v1;
+
+import "apple/swift_homomorphic_encryption/v1/error_stddev.proto";
+
+// A serialized `Plaintext`.
+message SerializedPlaintext {
+  // A serialized polynomial.
+  bytes poly = 1;
+}
+
+// A vector of serialized `Ciphertext`s.
+message SerializedCiphertextVec {
+  // Serialized ciphertexts.
+  repeated SerializedCiphertext ciphertexts = 1;
+}
+
+// A serialized `Ciphertext`.
+message SerializedCiphertext {
+  // Represents different serialized ciphertext types.
+  oneof serialized_ciphertext_type {
+    // Serialized ciphertext where a RNG seed is used to store a polynomial in a compressed form.
+    SerializedSeededCiphertext seeded = 1;
+    // Serialized ciphertext where each coefficient of each polynomial is serialized.
+    SerializedFullCiphertext full = 2;
+  }
+}
+
+// A serialized `Ciphertext` using a seed in place of the second polynomial.
+message SerializedSeededCiphertext {
+  // The serialized first polynomial.
+  bytes poly0 = 1;
+  // The seed for the second polynomial.
+  bytes seed = 2;
+}
+
+// A serialized `Ciphertext` with all polynomials expanded.
+message SerializedFullCiphertext {
+  // The polynomials in the ciphertext.
+  bytes polys = 1;
+  // Serialization may exclude low bits from each polyomial's coefficients, yielding reduced serialization size.
+  // The i'th entry tells how many bits to exclude from each coefficient of the i'th polynomial
+  // This is useful when the ciphertext is immediately decrypted upon deserialization.
+  repeated uint32 skip_lsbs = 2;
+  // Correction factor.
+  uint64 correction_factor = 3;
+}
+
+// A serialized `KeySwitchKey`.
+message SerializedKeySwitchKey {
+  // The key-switching key.
+  SerializedCiphertextVec key_switch_key = 1;
+}
+
+// A serialized `GaloisKey`.
+message SerializedGaloisKey {
+  // Maps each Galois element to its key-switching key.
+  map<uint64, SerializedKeySwitchKey> key_switch_keys = 1;
+}
+
+// A serialized `RelinearizationKey`.
+message SerializedRelinKey {
+  // The relinearization key.
+  SerializedKeySwitchKey relin_key = 1;
+}
+
+// A serialized `SecretKey`.
+message SerializedSecretKey {
+  // The polynomials in the secret key.
+  bytes polys = 1;
+}
+
+// A serialized `EvaluationKey`.
+message SerializedEvaluationKey {
+  // The Galois key.
+  SerializedGaloisKey galois_key = 1;
+  // The relinearization key.
+  SerializedRelinKey relin_key = 2;
+}
+
+// Configuration needed to generate a new evaluation key.
+message EvaluationKeyConfig {
+  // Encryption parameters.
+  EncryptionParameters encryption_parameters = 1;
+  // Galois elements required for server compute.
+  // Sorted in increasing order to ensure uniqueness of hash.
+  repeated uint32 galois_elements = 2;
+  // Whether or not the relinearization key is required.
+  bool has_relin_key = 3;
+}
+
+// The security level for encryption parameters based on ternary secrets.
+enum SecurityLevel {
+  // No security enforced.
+  SECURITY_LEVEL_UNSPECIFIED = 0;
+  // Post-quantum 128-bit security.
+  SECURITY_LEVEL_QUANTUM128 = 1;
+}
+
+// HE scheme.
+enum HeScheme {
+  // Unspecified.
+  HE_SCHEME_UNSPECIFIED = 0;
+  // Brakerski-Fan-Vercauteren.
+  HE_SCHEME_BFV = 1;
+  // Brakerski-Gentry-Vaikuntanathan.
+  HE_SCHEME_BGV = 2;
+}
+
+// Holds important parameters that instantiate the encryption scheme.
+message EncryptionParameters {
+  // Number of coefficients in a polynomial.
+  uint64 polynomial_degree = 1;
+  // Plaintext coefficients use this modulus. Homomorphic operations are done
+  // using this modulus.
+  uint64 plaintext_modulus = 2;
+  // A vector of `q_0, q_1, ..., q_n`, where the ciphertext modulus `q` is equal
+  // to the product of the coefficient_moduli `q_i`.
+  repeated uint64 coefficient_moduli = 3;
+  // Standard deviation of the error distribution.
+  ErrorStdDev error_std_dev = 4;
+  // Security level.
+  SecurityLevel security_level = 5;
+  // HE scheme.
+  HeScheme he_scheme = 6;
+}

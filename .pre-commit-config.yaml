@@ -1,0 +1,59 @@
+# Copyright 2024 Apple Inc. and the Swift Homomorphic Encryption project authors
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+    -   id: fix-byte-order-marker
+    -   id: check-case-conflict
+    -   id: check-merge-conflict
+    -   id: check-symlinks
+    -   id: check-yaml
+        args: [--allow-multiple-documents]
+    -   id: end-of-file-fixer
+    -   id: mixed-line-ending
+    -   id: trailing-whitespace
+    -   id: no-commit-to-branch
+        args: [--branch, main]
+-   repo: https://github.com/crate-ci/typos
+    rev: v1.22.9
+    hooks:
+    -   id: typos
+-   repo: https://github.com/Lucas-C/pre-commit-hooks
+    rev: v1.5.5
+    hooks:
+    -   id: insert-license
+        name: insert-license-proto
+        'types_or': [proto]
+        args:
+           - --license-filepath
+           - copyright-header.txt
+           - --comment-style
+           - //
+           - --allow-past-years
+    -   id: insert-license
+        name: insert-license-yaml
+        'types_or': [yaml]
+        args:
+           - --license-filepath
+           - copyright-header.txt
+           - --allow-past-years
+-   repo: https://github.com/bufbuild/buf
+    rev: v1.34.0
+    hooks:
+      - id: buf-lint
+      - id: buf-format
+      - id: buf-breaking
+        args: [--against, '.git#branch=main']
