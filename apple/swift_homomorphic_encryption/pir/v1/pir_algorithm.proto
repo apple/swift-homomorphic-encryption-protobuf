@@ -18,8 +18,12 @@ package apple.swift_homomorphic_encryption.pir.v1;
 // Different algorithms for PIR.
 enum PirAlgorithm {
   // AclsPir.
+  //
+  // <https://eprint.iacr.org/2017/1142.pdf>
   PIR_ALGORITHM_ACLS_PIR = 0;
   // MulPir.
+  //
+  // <https://eprint.iacr.org/2019/1483.pdf>
   PIR_ALGORITHM_MUL_PIR = 1;
   reserved 3;
 }

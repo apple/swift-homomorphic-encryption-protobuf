@@ -53,10 +53,14 @@ message SerializedFullCiphertext {
   // The polynomials in the ciphertext.
   bytes polys = 1;
   // Serialization may exclude low bits from each polyomial's coefficients, yielding reduced serialization size.
+  //
   // The i'th entry tells how many bits to exclude from each coefficient of the i'th polynomial
   // This is useful when the ciphertext is immediately decrypted upon deserialization.
+  // See Section 5.2 of <https://eprint.iacr.org/2022/207.pdf>.
   repeated uint32 skip_lsbs = 2;
   // Correction factor.
+  //
+  // See Section 4 of <https://eprint.iacr.org/2020/1481.pdf>.
   uint64 correction_factor = 3;
 }
 
