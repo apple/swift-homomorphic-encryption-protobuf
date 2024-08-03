@@ -25,5 +25,5 @@ enum PirAlgorithm {
   //
   // <https://eprint.iacr.org/2019/1483.pdf>
   PIR_ALGORITHM_MUL_PIR = 1;
-  reserved 3;
+  reserved 2;
 }
