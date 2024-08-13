@@ -51,9 +51,9 @@ repos:
            - copyright-header.txt
            - --allow-past-years
 -   repo: https://github.com/bufbuild/buf
-    rev: v1.34.0
+    rev: v1.36.0
     hooks:
       - id: buf-lint
       - id: buf-format
       - id: buf-breaking
-        args: [--against, '.git#branch=main']
+        args: [--against, 'https://github.com/apple/swift-homomorphic-encryption-protobuf.git#branch=main']
