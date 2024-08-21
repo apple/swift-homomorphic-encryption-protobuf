@@ -26,4 +26,5 @@ lint:
   ignore_only:
     ENUM_ZERO_VALUE_SUFFIX:
       - apple/swift_homomorphic_encryption/pir/v1/pir_algorithm.proto
+      - apple/swift_homomorphic_encryption/pnns/v1/pnns_distance_metric.proto
       - apple/swift_homomorphic_encryption/v1/error_stddev.proto

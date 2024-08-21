@@ -1,0 +1,39 @@
+// Copyright 2024 Apple Inc. and the Swift Homomorphic Encryption project authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+package apple.swift_homomorphic_encryption.pnns.v1;
+
+import "apple/swift_homomorphic_encryption/pnns/v1/pnns_distance_metric.proto";
+import "apple/swift_homomorphic_encryption/pnns/v1/pnns_matrix_packing.proto";
+import "apple/swift_homomorphic_encryption/v1/he.proto";
+
+// The client configuration.
+message ClientConfig {
+  // Encryption parameters.
+  apple.swift_homomorphic_encryption.v1.EncryptionParameters encryption_parameters = 1;
+  // Factor by which to scale floating-point entries before rounding to integers.
+  uint64 scaling_factor = 2;
+  // Packing for the query.
+  MatrixPacking query_packing = 3;
+  // Number of entries in each vector.
+  uint32 vector_dimension = 4;
+  // Galois elements required for nearest neighbors computation.
+  repeated uint32 galois_elements = 5;
+  // Metric for distances between vectors.
+  DistanceMetric distance_metric = 6;
+  // For plaintext CRT, the list of extra plaintext moduli.
+  // The first plaintext modulus will be the one in `encryption_parameters`.
+  repeated uint64 extra_plaintext_moduli = 7;
+}
