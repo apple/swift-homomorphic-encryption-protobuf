@@ -1,0 +1,49 @@
+// Copyright 2024 Apple Inc. and the Swift Homomorphic Encryption project authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+package apple.swift_homomorphic_encryption.api.v1;
+
+import "apple/swift_homomorphic_encryption/v1/he.proto";
+
+// Evaluation key metadata.
+message EvaluationKeyMetadata {
+  // Timestamp of the (secret) key generation, seconds from Unix epoch.
+  uint64 timestamp = 1;
+  // Key identifier (SHA256 of `EvaluationKeyConfig`).
+  bytes identifier = 2;
+}
+
+// Status of the evaluation key.
+message KeyStatus {
+  // When was this key last updated (seconds from Unix epoch), 0 when key is missing.
+  uint64 timestamp = 1;
+  // Configuration for the key.
+  apple.swift_homomorphic_encryption.v1.EvaluationKeyConfig key_config = 2;
+  reserved 3;
+}
+
+// Container for multiple evaluation keys.
+message EvaluationKeys {
+  // Evaluation keys.
+  repeated EvaluationKey keys = 1;
+}
+
+// Evaluation key upload.
+message EvaluationKey {
+  // Metadata for the key.
+  EvaluationKeyMetadata metadata = 1;
+  // Evaluation key.
+  apple.swift_homomorphic_encryption.v1.SerializedEvaluationKey evaluation_key = 2;
+}
