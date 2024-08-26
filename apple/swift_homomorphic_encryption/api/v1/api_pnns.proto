@@ -1,0 +1,71 @@
+// Copyright 2024 Apple Inc. and the Swift Homomorphic Encryption project authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+package apple.swift_homomorphic_encryption.api.v1;
+
+import "apple/swift_homomorphic_encryption/api/v1/api_evaluation_key.proto";
+import "apple/swift_homomorphic_encryption/pnns/v1/pnns.proto";
+import "apple/swift_homomorphic_encryption/pnns/v1/pnns_distance_metric.proto";
+import "apple/swift_homomorphic_encryption/pnns/v1/pnns_matrix_packing.proto";
+import "apple/swift_homomorphic_encryption/v1/he.proto";
+
+// Configuration for one PNNS usecase.
+message PNNSConfig {
+  // Encryption parameters.
+  apple.swift_homomorphic_encryption.v1.EncryptionParameters encryption_parameters = 1;
+  // Factor by which to scale floating-point entries to integers.
+  uint64 scaling_factor = 2;
+  // Plaintext packing for the query.
+  apple.swift_homomorphic_encryption.pnns.v1.MatrixPacking plaintext_packing = 3;
+  // Number of entries in each vector.
+  uint32 vector_dimension = 4;
+  // Metric for similarity computation.
+  apple.swift_homomorphic_encryption.pnns.v1.DistanceMetric distance_metric = 5;
+  // hash of EvaluationKeyConfig.
+  bytes evaluation_key_config_hash = 6;
+  // For plaintext CRT, the list of extra plaintext moduli.
+  // The first plaintext modulus will be the one in `encryption_parameters`.
+  repeated uint64 extra_plaintext_moduli = 7;
+}
+
+// PNNS Request
+message PNNSRequest {
+  // optionally, the shard indices where this request should be routed
+  repeated uint32 shard_indices = 1;
+  // Encrypted query, one per plaintext CRT component
+  repeated apple.swift_homomorphic_encryption.pnns.v1.SerializedCiphertextMatrix query = 2;
+  // Key metadata
+  EvaluationKeyMetadata evaluation_key_metadata = 3;
+  // Identifier for the PNNSConfig used to construct the query
+  bytes config_id = 4;
+  // If set, evaluation key to query with. Will override evaluation key stored server-side
+  optional EvaluationKey evaluation_key = 5;
+}
+
+// PNNS Shard Response
+message PNNSShardResponse {
+  // Encrypted reply, one per plaintext CRT component
+  repeated apple.swift_homomorphic_encryption.pnns.v1.SerializedCiphertextMatrix reply = 1;
+  // A list of entry identifiers the server computed similarities for
+  repeated uint64 entry_ids = 2;
+  // Metadata for each entry in the database
+  repeated bytes entry_metadatas = 3;
+}
+
+// PNNS Response
+message PNNSResponse {
+  // PNNS responses from shards
+  repeated PNNSShardResponse shard_responses = 1;
+}

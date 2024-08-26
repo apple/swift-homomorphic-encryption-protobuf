@@ -15,40 +15,8 @@
 syntax = "proto3";
 package apple.swift_homomorphic_encryption.api.v1;
 
-import "apple/swift_homomorphic_encryption/pir/v1/pir.proto";
-import "apple/swift_homomorphic_encryption/pir/v1/pir_algorithm.proto";
-import "apple/swift_homomorphic_encryption/v1/he.proto";
-
-// Evaluation key metadata.
-message EvaluationKeyMetadata {
-  // Timestamp of the (secret) key generation, seconds from Unix epoch.
-  uint64 timestamp = 1;
-  // Key identifier (SHA256 of `EvaluationKeyConfig`).
-  bytes identifier = 2;
-}
-
-// Status of the evaluation key.
-message KeyStatus {
-  // When was this key last updated (seconds from Unix epoch), 0 when key is missing.
-  uint64 timestamp = 1;
-  // Configuration for the key.
-  apple.swift_homomorphic_encryption.v1.EvaluationKeyConfig key_config = 2;
-  reserved 3;
-}
-
-// Container for multiple evaluation keys.
-message EvaluationKeys {
-  // Evaluation keys.
-  repeated EvaluationKey keys = 1;
-}
-
-// Evaluation key upload.
-message EvaluationKey {
-  // Metadata for the key.
-  EvaluationKeyMetadata metadata = 1;
-  // Evaluation key.
-  apple.swift_homomorphic_encryption.v1.SerializedEvaluationKey evaluation_key = 2;
-}
+import "apple/swift_homomorphic_encryption/api/v1/api_evaluation_key.proto";
+import "apple/swift_homomorphic_encryption/api/v1/api_pir.proto";
 
 // Request for server side configurations.
 message ConfigRequest {
@@ -109,59 +77,4 @@ message Response {
     PIRResponse pir_response = 1;
   }
   reserved 2;
-}
-
-// Configuration for one shard of the PIR database.
-message PIRShardConfig {
-  // Number of entries in the shard.
-  uint64 num_entries = 1;
-  // Size in bytes of entries in the shard.
-  uint64 entry_size = 2;
-  // Dimensions that make up the hypercube.
-  repeated uint64 dimensions = 3;
-  // Unique identifier for the shard.
-  optional string shard_id = 4;
-  // Whether to compress vectorized PIR response.
-  optional bool compress_vectorized_pir_response = 5;
-  // The additional "batching" introduced in vectorized pir to accommodate large entry size.
-  optional uint64 vectorized_pir_internal_batching_size = 6;
-}
-
-// Configuration for one PIR usecase.
-message PIRConfig {
-  // Encryption parameters.
-  apple.swift_homomorphic_encryption.v1.EncryptionParameters encryption_parameters = 1;
-  // Configuration for each shard.
-  repeated PIRShardConfig shard_configs = 2;
-  // Parameters specific to KeywordPIR.
-  apple.swift_homomorphic_encryption.pir.v1.KeywordPirParameters keyword_pir_params = 3;
-  // Server-side PIR algorithm.
-  apple.swift_homomorphic_encryption.pir.v1.PirAlgorithm algorithm = 4;
-  // Maximum number of queries allowed in a single request.
-  uint64 batch_size = 5;
-  // Hash of EvaluationKeyConfig.
-  bytes evaluation_key_config_hash = 6;
-  reserved 7, 8;
-}
-
-// PIR Request.
-message PIRRequest {
-  // Shard index where this request should be routed. Can be overridden by shard_id.
-  uint32 shard_index = 1;
-  // Encrypted query.
-  apple.swift_homomorphic_encryption.pir.v1.EncryptedIndices query = 2;
-  // Evaluation key metadata.
-  EvaluationKeyMetadata evaluation_key_metadata = 3;
-  // Hash of the `PIRConfig` used to construct the query.
-  bytes configuration_hash = 4;
-  // If set, route request to a shard with this `shard_id` instead of `shard_index`.
-  optional string shard_id = 5;
-  // If set, evaluation key to query with. Will override evaluation key stored server-side.
-  optional EvaluationKey evaluation_key = 6;
-}
-
-// PIR Response.
-message PIRResponse {
-  // Encrypted replies, each of which is a ciphertext vector.
-  repeated apple.swift_homomorphic_encryption.v1.SerializedCiphertextVec replies = 1;
 }
