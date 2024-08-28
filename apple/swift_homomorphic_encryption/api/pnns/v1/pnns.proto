@@ -27,8 +27,8 @@ message PNNSConfig {
   apple.swift_homomorphic_encryption.v1.EncryptionParameters encryption_parameters = 1;
   // Factor by which to scale floating-point entries to integers.
   uint64 scaling_factor = 2;
-  // Plaintext packing for the query.
-  apple.swift_homomorphic_encryption.pnns.v1.MatrixPacking plaintext_packing = 3;
+  // Packing for the query.
+  apple.swift_homomorphic_encryption.pnns.v1.MatrixPacking query_packing = 3;
   // Number of entries in each vector.
   uint32 vector_dimension = 4;
   // Metric for similarity computation.
