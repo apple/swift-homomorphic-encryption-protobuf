@@ -13,7 +13,7 @@
 // limitations under the License.
 
 syntax = "proto3";
-package apple.swift_homomorphic_encryption.api.v1;
+package apple.swift_homomorphic_encryption.api.shared.v1;
 
 import "apple/swift_homomorphic_encryption/v1/he.proto";
 

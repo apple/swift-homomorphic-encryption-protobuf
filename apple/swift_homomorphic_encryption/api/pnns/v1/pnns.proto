@@ -13,9 +13,9 @@
 // limitations under the License.
 
 syntax = "proto3";
-package apple.swift_homomorphic_encryption.api.v1;
+package apple.swift_homomorphic_encryption.api.pnns.v1;
 
-import "apple/swift_homomorphic_encryption/api/v1/api_evaluation_key.proto";
+import "apple/swift_homomorphic_encryption/api/shared/v1/api_shared.proto";
 import "apple/swift_homomorphic_encryption/pnns/v1/pnns.proto";
 import "apple/swift_homomorphic_encryption/pnns/v1/pnns_distance_metric.proto";
 import "apple/swift_homomorphic_encryption/pnns/v1/pnns_matrix_packing.proto";
@@ -47,11 +47,11 @@ message PNNSRequest {
   // Encrypted query, one per plaintext CRT component
   repeated apple.swift_homomorphic_encryption.pnns.v1.SerializedCiphertextMatrix query = 2;
   // Key metadata
-  EvaluationKeyMetadata evaluation_key_metadata = 3;
+  apple.swift_homomorphic_encryption.api.shared.v1.EvaluationKeyMetadata evaluation_key_metadata = 3;
   // Identifier for the PNNSConfig used to construct the query
   bytes config_id = 4;
   // If set, evaluation key to query with. Will override evaluation key stored server-side
-  optional EvaluationKey evaluation_key = 5;
+  optional apple.swift_homomorphic_encryption.api.shared.v1.EvaluationKey evaluation_key = 5;
 }
 
 // PNNS Shard Response

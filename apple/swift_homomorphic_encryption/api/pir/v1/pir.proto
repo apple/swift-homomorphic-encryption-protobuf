@@ -13,9 +13,9 @@
 // limitations under the License.
 
 syntax = "proto3";
-package apple.swift_homomorphic_encryption.api.v1;
+package apple.swift_homomorphic_encryption.api.pir.v1;
 
-import "apple/swift_homomorphic_encryption/api/v1/api_evaluation_key.proto";
+import "apple/swift_homomorphic_encryption/api/shared/v1/api_shared.proto";
 import "apple/swift_homomorphic_encryption/pir/v1/pir.proto";
 import "apple/swift_homomorphic_encryption/pir/v1/pir_algorithm.proto";
 import "apple/swift_homomorphic_encryption/v1/he.proto";
@@ -60,13 +60,13 @@ message PIRRequest {
   // Encrypted query.
   apple.swift_homomorphic_encryption.pir.v1.EncryptedIndices query = 2;
   // Evaluation key metadata.
-  EvaluationKeyMetadata evaluation_key_metadata = 3;
+  apple.swift_homomorphic_encryption.api.shared.v1.EvaluationKeyMetadata evaluation_key_metadata = 3;
   // Hash of the `PIRConfig` used to construct the query.
   bytes configuration_hash = 4;
   // If set, route request to a shard with this `shard_id` instead of `shard_index`.
   optional string shard_id = 5;
   // If set, evaluation key to query with. Will override evaluation key stored server-side.
-  optional EvaluationKey evaluation_key = 6;
+  optional apple.swift_homomorphic_encryption.api.shared.v1.EvaluationKey evaluation_key = 6;
 }
 
 // PIR Response.
