@@ -29,7 +29,7 @@ message BabyStepGiantStep {
 // Different algorithms for packing a matrix of scalar values into plaintexts / ciphertexts.
 message MatrixPacking {
   // Different packing formats.
-  oneof plaintext_packing_type {
+  oneof matrix_packing_type {
     // Dense row packing.
     MatrixPackingDenseRow dense_row = 1;
 
