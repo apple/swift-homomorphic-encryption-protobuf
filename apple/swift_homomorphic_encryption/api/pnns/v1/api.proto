@@ -13,30 +13,28 @@
 // limitations under the License.
 
 syntax = "proto3";
-package apple.swift_homomorphic_encryption.api.v1;
+package apple.swift_homomorphic_encryption.api.pnns.v1;
 
-import "apple/swift_homomorphic_encryption/api/pir/v1/pir.proto";
 import "apple/swift_homomorphic_encryption/api/pnns/v1/pnns.proto";
 import "apple/swift_homomorphic_encryption/api/shared/v1/api_shared.proto";
-
-// Usecase configuration.
-message Config {
-  // Configuration.
-  oneof config {
-    // Configuration for a PIR usecase.
-    apple.swift_homomorphic_encryption.api.pir.v1.PIRConfig pir_config = 1;
-    // Configuration for a PNNS usecase.
-    apple.swift_homomorphic_encryption.api.pnns.v1.PNNSConfig pnns_config = 2;
-  }
-  // Unique identifier for the configuration.
-  bytes config_id = 3;
-}
 
 // Request for server side configurations.
 message ConfigRequest {
   // List of usecases to fetch configs for.
   // When set to empty array, all configs will be returned.
   repeated string usecases = 1;
+}
+
+// Usecase configuration.
+message Config {
+  reserved 1;
+  // Configuration.
+  oneof config {
+    // Configuration for a PNNS usecase.
+    apple.swift_homomorphic_encryption.api.pnns.v1.PNNSConfig pnns_config = 2;
+  }
+  // Unique identifier for the configuration.
+  bytes config_id = 3;
 }
 
 // Server side configurations.
@@ -63,10 +61,9 @@ message Responses {
 message Request {
   // Usecase identifier.
   string usecase = 1;
+  reserved 2;
   // Generic request.
   oneof request {
-    // PIR request.
-    apple.swift_homomorphic_encryption.api.pir.v1.PIRRequest pir_request = 2;
     // PNNS request.
     apple.swift_homomorphic_encryption.api.pnns.v1.PNNSRequest pnns_request = 3;
   }
@@ -74,10 +71,9 @@ message Request {
 
 // Generic response.
 message Response {
+  reserved 1;
   // Generic response.
   oneof response {
-    // Response to a `PIRRequest`.
-    apple.swift_homomorphic_encryption.api.pir.v1.PIRResponse pir_response = 1;
     // Response to a `PNNSRequest`.
     apple.swift_homomorphic_encryption.api.pnns.v1.PNNSResponse pnns_response = 2;
   }
