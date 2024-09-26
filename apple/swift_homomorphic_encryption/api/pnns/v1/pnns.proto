@@ -31,7 +31,7 @@ message PNNSConfig {
   apple.swift_homomorphic_encryption.pnns.v1.MatrixPacking query_packing = 3;
   // Number of entries in each vector.
   uint32 vector_dimension = 4;
-  // Metric for similarity computation.
+  // Metric for computing distances.
   apple.swift_homomorphic_encryption.pnns.v1.DistanceMetric distance_metric = 5;
   // hash of EvaluationKeyConfig.
   bytes evaluation_key_config_hash = 6;

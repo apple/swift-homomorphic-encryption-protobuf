@@ -15,17 +15,17 @@
 syntax = "proto3";
 package apple.swift_homomorphic_encryption.pnns.v1;
 
-// Row in a private nearest neighbors search database.
+// Row in a private nearest neighbor search database.
 message DatabaseRow {
   // Unique identifier for the database entry.
   uint64 entry_id = 1;
   // Metadata associated with the entry.
   bytes entry_metadata = 2;
-  // Vector for use in nearest neighbors computation.
+  // Vector for use in nearest neighbor search.
   repeated float vector = 3;
 }
 
-// A private nearest neighbors search database.
+// A private nearest neighbor search database.
 message Database {
   // Rows in the database.
   repeated DatabaseRow rows = 1;

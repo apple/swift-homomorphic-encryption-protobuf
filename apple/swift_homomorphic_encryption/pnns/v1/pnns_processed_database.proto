@@ -18,9 +18,9 @@ package apple.swift_homomorphic_encryption.pnns.v1;
 import "apple/swift_homomorphic_encryption/pnns/v1/pnns.proto";
 import "apple/swift_homomorphic_encryption/pnns/v1/pnns_server_config.proto";
 
-// Serialized pre-processed nearest neighbors database.
+// Serialized pre-processed nearest neighbor database.
 message SerializedProcessedDatabase {
-  // Pre-computed values for the nearest neighbors computation, one per plaintext CRT modulus.
+  // Pre-computed values for the nearest neighbor search, one per plaintext CRT modulus.
   repeated SerializedPlaintextMatrix plaintext_matrices = 1;
   // Unique identifier for each entry in the database.
   repeated uint64 entry_ids = 2;
