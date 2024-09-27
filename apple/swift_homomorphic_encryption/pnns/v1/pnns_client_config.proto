@@ -29,7 +29,7 @@ message ClientConfig {
   MatrixPacking query_packing = 3;
   // Number of entries in each vector.
   uint32 vector_dimension = 4;
-  // Galois elements required for nearest neighbors computation.
+  // Galois elements required for nearest neighbor search.
   repeated uint32 galois_elements = 5;
   // Metric for distances between vectors.
   DistanceMetric distance_metric = 6;
