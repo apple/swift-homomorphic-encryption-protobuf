@@ -58,7 +58,33 @@ message PirParameters {
 message KeywordPirParameters {
   // The number of hash functions used.
   uint64 num_hash_functions = 1;
-  reserved 2, 3, 4;
+  reserved 2, 3;
+  // The sharding function to use.
+  PIRShardingFunction sharding_function = 4;
+}
+
+// Configuration for the sharding function.
+message PIRShardingFunction {
+  // Sharding function to use.
+  oneof function {
+    // Sharding based on SHA256 hash of the keyword.
+    PIRShardingFunctionSHA256 sha256 = 1;
+    // Sharding depends on a different usecase.
+    PIRShardingFunctionDoubleMod double_mod = 2;
+  }
+}
+
+// SHA256 sharding function.
+//
+// shard_id = (truncate(SHA256(keyword)) % shard_count).
+message PIRShardingFunctionSHA256 {}
+
+// Double mod sharding function.
+//
+// shard_id = (truncate(SHA256(keyword)) % other_shard_count) % shard_count.
+message PIRShardingFunctionDoubleMod {
+  // Number of shards in the other usecase.
+  uint32 other_shard_count = 1;
 }
 
 // Encrypted PIR index.
