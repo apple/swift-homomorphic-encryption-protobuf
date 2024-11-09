@@ -58,7 +58,7 @@ message PirParameters {
 message KeywordPirParameters {
   // The number of hash functions used.
   uint64 num_hash_functions = 1;
-  reserved 2;
+  reserved 2, 3, 4;
 }
 
 // Encrypted PIR index.

@@ -19,6 +19,15 @@ import "apple/swift_homomorphic_encryption/api/pir/v1/pir.proto";
 import "apple/swift_homomorphic_encryption/api/pnns/v1/pnns.proto";
 import "apple/swift_homomorphic_encryption/api/shared/v1/api_shared.proto";
 
+// Request for server side configurations.
+message ConfigRequest {
+  // List of usecases to fetch configs for.
+  // When set to empty array, all configs will be returned.
+  repeated string usecases = 1;
+  // For each usecase, the existing config id, if one exists.
+  repeated bytes existing_config_ids = 2;
+}
+
 // Usecase configuration.
 message Config {
   // Configuration.
@@ -30,13 +39,8 @@ message Config {
   }
   // Unique identifier for the configuration.
   bytes config_id = 3;
-}
-
-// Request for server side configurations.
-message ConfigRequest {
-  // List of usecases to fetch configs for.
-  // When set to empty array, all configs will be returned.
-  repeated string usecases = 1;
+  // Indicator that the config is the same config as in the ConfigRequest. If set, all other fields can be unset.
+  bool reuse_existing_config = 4;
 }
 
 // Server side configurations.
