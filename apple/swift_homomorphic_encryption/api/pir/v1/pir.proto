@@ -40,7 +40,7 @@ message PIRShardConfig {
 message PIRConfig {
   // Encryption parameters.
   apple.swift_homomorphic_encryption.v1.EncryptionParameters encryption_parameters = 1;
-  // Configuration for each shard.
+  // Configuration for each shard; can be overridden by `pir_shard_configs` (field 10).
   repeated PIRShardConfig shard_configs = 2;
   // Parameters specific to KeywordPIR.
   apple.swift_homomorphic_encryption.pir.v1.KeywordPirParameters keyword_pir_params = 3;
@@ -50,7 +50,26 @@ message PIRConfig {
   uint64 batch_size = 5;
   // Hash of EvaluationKeyConfig.
   bytes evaluation_key_config_hash = 6;
-  reserved 7, 8;
+  reserved 7, 8, 9;
+  // Configuration for each shard; overrides `shard_configs` (field 2).
+  PIRShardConfigs pir_shard_configs = 10;
+}
+
+// Configuration for PIR shards.
+message PIRShardConfigs {
+  // Different shard configuration formats.
+  oneof shard_configs {
+    // Repeated shard configuration.
+    PIRFixedShardConfig repeated_shard_config = 1;
+  }
+}
+
+// Every shard configuration is the same.
+message PIRFixedShardConfig {
+  // Shard configuration for all the shards.
+  PIRShardConfig shard_config = 1;
+  // Number of shards.
+  uint32 shard_count = 2;
 }
 
 // PIR Request.
