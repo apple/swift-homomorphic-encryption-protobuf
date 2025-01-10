@@ -1,4 +1,4 @@
-# Copyright 2024 Apple Inc. and the Swift Homomorphic Encryption project authors
+# Copyright 2024-2025 Apple Inc. and the Swift Homomorphic Encryption project authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 
 repos:
 -   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.6.0
+    rev: v5.0.0
     hooks:
     -   id: fix-byte-order-marker
     -   id: check-case-conflict
@@ -28,7 +28,7 @@ repos:
     -   id: no-commit-to-branch
         args: [--branch, main]
 -   repo: https://github.com/crate-ci/typos
-    rev: v1.22.9
+    rev: v1.29.3
     hooks:
     -   id: typos
 -   repo: https://github.com/Lucas-C/pre-commit-hooks
@@ -43,6 +43,7 @@ repos:
            - --comment-style
            - //
            - --allow-past-years
+           - --use-current-year
     -   id: insert-license
         name: insert-license-yaml
         'types_or': [yaml]
@@ -50,8 +51,9 @@ repos:
            - --license-filepath
            - copyright-header.txt
            - --allow-past-years
+           - --use-current-year
 -   repo: https://github.com/bufbuild/buf
-    rev: v1.36.0
+    rev: v1.48.0
     hooks:
       - id: buf-lint
       - id: buf-format
