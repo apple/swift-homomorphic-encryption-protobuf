@@ -52,6 +52,14 @@ repos:
            - copyright-header.txt
            - --allow-past-years
            - --use-current-year
+    -   id: insert-license
+        name: insert-license-sh
+        files: \.sh$
+        args:
+           - --license-filepath
+           - copyright-header.txt
+           - --allow-past-years
+           - --use-current-year
 -   repo: https://github.com/bufbuild/buf
     rev: v1.48.0
     hooks:
