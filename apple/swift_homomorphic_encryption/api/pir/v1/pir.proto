@@ -1,4 +1,4 @@
-// Copyright 2024 Apple Inc. and the Swift Homomorphic Encryption project authors
+// Copyright 2024-2025 Apple Inc. and the Swift Homomorphic Encryption project authors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -92,4 +92,20 @@ message PIRRequest {
 message PIRResponse {
   // Encrypted replies, each of which is a ciphertext vector.
   repeated apple.swift_homomorphic_encryption.v1.SerializedCiphertextVec replies = 1;
+}
+
+// PIR OPRF Request.
+message OPRFRequest {
+  // Serialized query.
+  bytes query_element = 1;
+  // Identifier for PirConfig used to construct this request.
+  bytes config_id = 2;
+}
+
+// PIR OPRF Response.
+message OPRFResponse {
+  // Serialized output of OPRF.
+  bytes evaluated_element = 1;
+  // Proof of OPRF evaluation.
+  bytes proof = 2;
 }

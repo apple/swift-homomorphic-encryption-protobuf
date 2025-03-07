@@ -1,4 +1,4 @@
-// Copyright 2024 Apple Inc. and the Swift Homomorphic Encryption project authors
+// Copyright 2024-2025 Apple Inc. and the Swift Homomorphic Encryption project authors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -51,14 +51,16 @@ message PirParameters {
   apple.swift_homomorphic_encryption.v1.EvaluationKeyConfig evaluation_key_config = 8;
   // Key compression strategy.
   KeyCompressionStrategy key_compression_strategy = 9;
-  reserved 10, 11;
+  reserved 10, 11, 12;
 }
 
 // Parameters for keyword PIR.
 message KeywordPirParameters {
   // The number of hash functions used.
   uint64 num_hash_functions = 1;
-  reserved 2, 3;
+  reserved 2;
+  // Symmetric PIR configuration
+  SymmetricPirClientConfig symmetric_pir_client_config = 3;
   // The sharding function to use.
   PIRShardingFunction sharding_function = 4;
 }
@@ -93,4 +95,20 @@ message EncryptedIndices {
   repeated apple.swift_homomorphic_encryption.v1.SerializedCiphertext ciphertexts = 1;
   // Number of PIR calls.
   uint64 num_pir_calls = 2;
+}
+
+// Scheme used for encrypting database entries in Symmetric PIR.
+enum SymmetricPirConfigType {
+  // Unspecified config type.
+  SYMMETRIC_PIR_CONFIG_TYPE_UNSPECIFIED = 0;
+  // OPRF P384 AES-192-GCM, 96-bit nonce, 128-bit tag
+  SYMMETRIC_PIR_CONFIG_TYPE_OPRF_P384_AES_GCM_192_NONCE_96_TAG_128 = 1;
+}
+
+// Client specific PIR configuration for Symmetric PIR
+message SymmetricPirClientConfig {
+  // Server public key
+  bytes server_public_key = 1;
+  // Symmetric PIR config type
+  SymmetricPirConfigType config_type = 2;
 }

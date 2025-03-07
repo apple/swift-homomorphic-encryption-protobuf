@@ -1,4 +1,4 @@
-// Copyright 2024 Apple Inc. and the Swift Homomorphic Encryption project authors
+// Copyright 2024-2025 Apple Inc. and the Swift Homomorphic Encryption project authors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -73,6 +73,8 @@ message Request {
     apple.swift_homomorphic_encryption.api.pir.v1.PIRRequest pir_request = 2;
     // PNNS request.
     apple.swift_homomorphic_encryption.api.pnns.v1.PNNSRequest pnns_request = 3;
+    // OPRF request.
+    apple.swift_homomorphic_encryption.api.pir.v1.OPRFRequest oprf_request = 4;
   }
 }
 
@@ -84,5 +86,7 @@ message Response {
     apple.swift_homomorphic_encryption.api.pir.v1.PIRResponse pir_response = 1;
     // Response to a `PNNSRequest`.
     apple.swift_homomorphic_encryption.api.pnns.v1.PNNSResponse pnns_response = 2;
+    // Response to `OPRFRequest`.
+    apple.swift_homomorphic_encryption.api.pir.v1.OPRFResponse oprf_response = 3;
   }
 }
