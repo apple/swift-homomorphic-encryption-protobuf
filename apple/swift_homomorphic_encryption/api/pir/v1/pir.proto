@@ -92,6 +92,8 @@ message PIRRequest {
 message PIRResponse {
   // Encrypted replies, each of which is a ciphertext vector.
   repeated apple.swift_homomorphic_encryption.v1.SerializedCiphertextVec replies = 1;
+  // Stash of entries with the most recent updates that have not yet reached the processed database.
+  StashOfEntries stash = 2;
 }
 
 // PIR OPRF Request.
@@ -108,4 +110,21 @@ message OPRFResponse {
   bytes evaluated_element = 1;
   // Proof of OPRF evaluation.
   bytes proof = 2;
+}
+
+// Stash of entries.
+//
+// Stash is meant to be used as temporary storage until we can update the processed database.
+message StashOfEntries {
+  // Sorted list of hashed keywords.
+  //
+  // hashed_keyword = Truncate(SHA256(keyword))
+  repeated uint64 hashed_keywords = 1;
+  // The values associated with each keyword in the `hashed_keywords` list. Must be in the same order.
+  repeated bytes values = 2;
+  // Sorted list of hashed keywords that were removed from the dataset.
+  //
+  // This list contains hashed keywords that were deleted, but may still be present in the processed database.
+  // hashed_keyword = Truncate(SHA256(keyword))
+  repeated uint64 removed_hashed_keywords = 3;
 }
