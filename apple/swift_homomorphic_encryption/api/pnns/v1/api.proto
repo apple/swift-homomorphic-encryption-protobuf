@@ -84,3 +84,38 @@ message Response {
   }
   reserved 3;
 }
+
+// Error returned by failed API calls.
+message Error {
+  // Client configuration not found.
+  //
+  // Client should retry after fetching new configuration. May include new configuration
+  // in `config_response`. In this case, client should use this returned configuration and retry.
+  message ConfigVersionNotFound {
+    // ConfigResponse that client should use for subsequent requests.
+    optional ConfigResponse config_response = 1;
+  }
+
+  // Evaluation key not found.
+  //
+  // Client should upload evaluation key and retry.
+  message EvaluationKeyNotFound {}
+
+  // Request can not be parsed successfully.
+  message InvalidRequest {}
+
+  // Internal error.
+  message InternalError {}
+
+  // Type of error encountered while processing request.
+  oneof error_type {
+    // Client configuration not found.
+    ConfigVersionNotFound config_version_not_found = 1;
+    // Client evaluation key not found.
+    EvaluationKeyNotFound evaluation_key_not_found = 2;
+    // Request can not be parsed.
+    InvalidRequest invalid_request = 3;
+    // Internal error.
+    InternalError internal_error = 4;
+  }
+}
