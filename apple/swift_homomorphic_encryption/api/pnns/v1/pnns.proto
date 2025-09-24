@@ -1,4 +1,4 @@
-// Copyright 2024 Apple Inc. and the Swift Homomorphic Encryption project authors
+// Copyright 2024-2025 Apple Inc. and the Swift Homomorphic Encryption project authors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -40,32 +40,35 @@ message PNNSConfig {
   repeated uint64 extra_plaintext_moduli = 7;
 }
 
-// PNNS Request
+// PNNS Request.
 message PNNSRequest {
-  // optionally, the shard indices where this request should be routed
+  // Optionally, the shard indices where this request should be routed.
   repeated uint32 shard_indices = 1;
-  // Encrypted query, one per plaintext CRT component
+  // Encrypted query, one per plaintext CRT component.
   repeated apple.swift_homomorphic_encryption.pnns.v1.SerializedCiphertextMatrix query = 2;
-  // Key metadata
+  // Key metadata.
   apple.swift_homomorphic_encryption.api.shared.v1.EvaluationKeyMetadata evaluation_key_metadata = 3;
-  // Identifier for the PNNSConfig used to construct the query
+  // Identifier for the PNNSConfig used to construct the query.
   bytes config_id = 4;
-  // If set, evaluation key to query with. Will override evaluation key stored server-side
+  // If set, evaluation key to query with. Will override evaluation key stored server-side.
   optional apple.swift_homomorphic_encryption.api.shared.v1.EvaluationKey evaluation_key = 5;
+  // Optionally, the shard identifiers where this request should be routed.
+  // If set, will override `shard_indices`.
+  repeated string shard_ids = 6;
 }
 
-// PNNS Shard Response
+// PNNS Shard Response.
 message PNNSShardResponse {
-  // Encrypted reply, one per plaintext CRT component
+  // Encrypted reply, one per plaintext CRT component.
   repeated apple.swift_homomorphic_encryption.pnns.v1.SerializedCiphertextMatrix reply = 1;
-  // A list of entry identifiers the server computed similarities for
+  // A list of entry identifiers the server computed similarities for.
   repeated uint64 entry_ids = 2;
-  // Metadata for each entry in the database
+  // Metadata for each entry in the database.
   repeated bytes entry_metadatas = 3;
 }
 
-// PNNS Response
+// PNNS Response.
 message PNNSResponse {
-  // PNNS responses from shards
+  // PNNS responses from shards.
   repeated PNNSShardResponse shard_responses = 1;
 }
