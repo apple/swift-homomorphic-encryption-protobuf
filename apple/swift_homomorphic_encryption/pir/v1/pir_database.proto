@@ -1,4 +1,4 @@
-// Copyright 2024 Apple Inc. and the Swift Homomorphic Encryption project authors
+// Copyright 2024-2026 Apple Inc. and the Swift Homomorphic Encryption project authors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -27,4 +27,16 @@ message KeywordDatabaseRow {
 message KeywordDatabase {
   // List of keyword-value pairs.
   repeated KeywordDatabaseRow rows = 1;
+}
+
+// Row in an index PIR database.
+message IndexPirDatabaseRow {
+  // Value.
+  bytes value = 1;
+}
+
+// Input database for index PIR.
+message IndexPirDatabase {
+  // List of rows.
+  repeated IndexPirDatabaseRow rows = 1;
 }
