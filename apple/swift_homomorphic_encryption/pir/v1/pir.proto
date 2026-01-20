@@ -1,4 +1,4 @@
-// Copyright 2024-2025 Apple Inc. and the Swift Homomorphic Encryption project authors
+// Copyright 2024-2026 Apple Inc. and the Swift Homomorphic Encryption project authors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -52,6 +52,8 @@ message PirParameters {
   // Key compression strategy.
   KeyCompressionStrategy key_compression_strategy = 9;
   reserved 10, 11, 12;
+  // Whether to encode the entry size as part of the Index PIR response.
+  bool encoding_entry_size = 13;
 }
 
 // Parameters for keyword PIR.
