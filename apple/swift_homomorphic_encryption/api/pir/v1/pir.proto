@@ -1,4 +1,4 @@
-// Copyright 2024-2025 Apple Inc. and the Swift Homomorphic Encryption project authors
+// Copyright 2024-2026 Apple Inc. and the Swift Homomorphic Encryption project authors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ import "apple/swift_homomorphic_encryption/api/shared/v1/api_shared.proto";
 import "apple/swift_homomorphic_encryption/pir/v1/pir.proto";
 import "apple/swift_homomorphic_encryption/pir/v1/pir_algorithm.proto";
 import "apple/swift_homomorphic_encryption/v1/he.proto";
+import "google/protobuf/any.proto";
 
 // Configuration for one shard of the PIR database.
 message PIRShardConfig {
@@ -53,6 +54,11 @@ message PIRConfig {
   reserved 7, 8, 9;
   // Configuration for each shard; overrides `shard_configs` (field 2).
   PIRShardConfigs pir_shard_configs = 10;
+  // Whether to encode the entry size as part of the Index PIR response.
+  optional bool encoding_entry_size = 11;
+  // Additional user config. This field is purely to allow users conveniently attach their own config with CipherML's such
+  // that they don't need to build their own config service.
+  google.protobuf.Any custom_config = 100;
 }
 
 // Configuration for PIR shards.
