@@ -18,6 +18,7 @@ package apple.swift_homomorphic_encryption.api.pir.v1;
 import "apple/swift_homomorphic_encryption/api/shared/v1/api_shared.proto";
 import "apple/swift_homomorphic_encryption/pir/v1/pir.proto";
 import "apple/swift_homomorphic_encryption/pir/v1/pir_algorithm.proto";
+import "apple/swift_homomorphic_encryption/pir/v1/simple_pir.proto";
 import "apple/swift_homomorphic_encryption/v1/he.proto";
 import "google/protobuf/any.proto";
 
@@ -116,6 +117,32 @@ message OPRFResponse {
   bytes evaluated_element = 1;
   // Proof of OPRF evaluation.
   bytes proof = 2;
+}
+
+// Simple PIR config, includes the hint.
+message SimplePIRConfig {
+  // Database mapping.
+  apple.swift_homomorphic_encryption.pir.v1.DatabaseMapping database_mapping = 1;
+  // Simple PIR parameters for each shard.
+  repeated apple.swift_homomorphic_encryption.pir.v1.SimplePIRParameters params = 2;
+  // List of identifiers (e.g. SHA256 hash) of hint files for each shard.
+  repeated bytes hint_identifiers = 3;
+}
+
+// Simple PIR request.
+message SimplePIRRequest {
+  // Simple PIR request.
+  apple.swift_homomorphic_encryption.pir.v1.SimplePIRMatrix request = 1;
+  // Shard index.
+  uint32 shard_index = 2;
+  // Hash of the `SimplePIRConfig` used to construct the query.
+  bytes configuration_hash = 3;
+}
+
+// Simple PIR response.
+message SimplePIRResponse {
+  // Simple PIR response.
+  apple.swift_homomorphic_encryption.pir.v1.SimplePIRMatrix response = 1;
 }
 
 // Stash of entries.

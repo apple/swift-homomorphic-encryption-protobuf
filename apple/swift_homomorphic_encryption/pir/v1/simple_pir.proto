@@ -1,0 +1,79 @@
+// Copyright 2025-2026 Apple Inc. and the Swift Homomorphic Encryption project authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+package apple.swift_homomorphic_encryption.pir.v1;
+
+// Matrix used in SimplePIR.
+message SimplePIRMatrix {
+  // Row count.
+  uint32 row_count = 1;
+  // Column count.
+  uint32 col_count = 2;
+  // Matrix content in row-major order.
+  repeated uint64 data = 3;
+}
+
+// LWE parameters for SimplePIR.
+message SimplePIREncryptionParams {
+  // Lattice dimension used for encryption.
+  uint32 lattice_dimension = 1;
+  // Error std dev.
+  double error_std_dev = 2;
+  // Plaintext modulus bit count: `ceil(log2(plaintext modulus))`.
+  uint32 plaintext_bits = 3;
+  // Ciphertext modulus bit count: `ceil(log2(ciphertext modulus))`.
+  uint32 ciphertext_bits = 4;
+}
+
+// Context for SimplePIR.
+message SimplePIRParameters {
+  // Encryption parameters for SimplePIR.
+  SimplePIREncryptionParams encryption_params = 1;
+  // Seed to generate `A` matrix.
+  bytes a_seed = 2;
+  // The size of each database entry in bytes.
+  uint32 entry_size_in_bytes = 3;
+  // Number of entries encoded in each column.
+  uint32 entries_per_column = 4;
+  // Number of chunks per entry.
+  uint32 chunks_per_entry = 5;
+  // Number of columns in the database.
+  uint32 database_columns = 6;
+}
+
+// Database mapping.
+message DatabaseMapping {
+  // Location of chunk.
+  message ChunkLocation {
+    // Shard index.
+    uint32 shard_index = 1;
+    // Index in shard.
+    uint32 index = 2;
+  }
+  // Entry that is made up of chunks.
+  message Entry {
+    // Original index.
+    uint64 original_index = 1;
+    // Size of the entry in bytes.
+    uint32 size = 2;
+    // List of chunk locations.
+    repeated ChunkLocation chunks = 3;
+  }
+
+  // List of entries.
+  repeated Entry entries = 1;
+  // Chunk size.
+  uint32 chunk_size = 2;
+}

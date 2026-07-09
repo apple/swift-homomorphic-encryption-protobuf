@@ -1,4 +1,4 @@
-// Copyright 2024 Apple Inc. and the Swift Homomorphic Encryption project authors
+// Copyright 2024-2026 Apple Inc. and the Swift Homomorphic Encryption project authors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,4 +22,9 @@ enum ErrorStdDev {
   // In practice, since we sample using a centered binomial distribution,
   // the sampled standard deviation may exceed the target standard deviation.
   ERROR_STD_DEV_STDDEV32 = 0;
+  // 16 / sqrt(2 pi) ~= 6.4.
+  // Note: this is the target standard deviation.
+  // In practice, since we sample using a centered binomial distribution,
+  // the sampled standard deviation may exceed the target standard deviation.
+  ERROR_STD_DEV_STDDEV64 = 1;
 }
