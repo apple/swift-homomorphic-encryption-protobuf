@@ -1,4 +1,4 @@
-// Copyright 2024-2025 Apple Inc. and the Swift Homomorphic Encryption project authors
+// Copyright 2024-2026 Apple Inc. and the Swift Homomorphic Encryption project authors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -36,6 +36,8 @@ message Config {
     apple.swift_homomorphic_encryption.api.pir.v1.PIRConfig pir_config = 1;
     // Configuration for a PNNS usecase.
     apple.swift_homomorphic_encryption.api.pnns.v1.PNNSConfig pnns_config = 2;
+    // Configuration for a SimplePIR usecase.
+    apple.swift_homomorphic_encryption.api.pir.v1.SimplePIRConfig simple_pir_config = 5;
   }
   // Unique identifier for the configuration.
   bytes config_id = 3;
@@ -75,6 +77,8 @@ message Request {
     apple.swift_homomorphic_encryption.api.pnns.v1.PNNSRequest pnns_request = 3;
     // OPRF request.
     apple.swift_homomorphic_encryption.api.pir.v1.OPRFRequest oprf_request = 4;
+    // SimplePIR request.
+    apple.swift_homomorphic_encryption.api.pir.v1.SimplePIRRequest simple_pir_request = 5;
   }
 }
 
@@ -88,6 +92,8 @@ message Response {
     apple.swift_homomorphic_encryption.api.pnns.v1.PNNSResponse pnns_response = 2;
     // Response to `OPRFRequest`.
     apple.swift_homomorphic_encryption.api.pir.v1.OPRFResponse oprf_response = 3;
+    // Response to `SimplePIRRequest`.
+    apple.swift_homomorphic_encryption.api.pir.v1.SimplePIRResponse simple_pir_response = 4;
   }
 }
 
